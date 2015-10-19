@@ -12,6 +12,9 @@
   "author": "Justin Brumley",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.13.3"
+    "express": "^4.13.3",
+    "express-session": "^1.11.3",
+    "mysql": "^2.9.0",
+    "sequelize": "^3.12.2"
   }
 }
