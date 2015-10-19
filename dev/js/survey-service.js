@@ -6,7 +6,12 @@ app.factory("SurveyService", function($http) {
       return $http.get("/api/survey");
     };
 
+    var sendResponse = function(data) {
+      return $http.post("/api/survey", data)
+    };
+
     return {
-      getQuestion: getQuestion
+      getQuestion: getQuestion,
+      sendResponse: sendResponse
     };
 });

@@ -11,6 +11,7 @@ var express = require("express"),
 // Middleware and Route Declarations
 // --------------------------------
 router.get("/survey", getQuestion);
+router.post("/survey", postResponse);
 router.use(authenticate);
 router.get("/survey/data", getData);
 router.get("/survey/:id/data", getDataBySurvey);
@@ -48,6 +49,17 @@ function getQuestion(req, res) {
       res.json(values);
     });
   });
+}
+
+// Adds a response to a survey question to the database.
+function postResponse(req, res) {
+  var questionId = req.body.questionId,
+      answerId = req.body.answerId;
+
+  // TODO add verification code to prevent user from answering a survey they
+  // already answered, and make sure that the answer matches the survey.
+
+  dbHelper.addVote(answerId);
 }
 
 // Authenticate middleware

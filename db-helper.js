@@ -1,7 +1,8 @@
 var models = require("./models");
 
 module.exports = {
-  getQuestions: getQuestions
+  getQuestions: getQuestions,
+  addVote: addVote
 };
 
 // --------------------------------
@@ -17,5 +18,22 @@ function getQuestions(askedQuestions) {
     where: {
       id: { $notIn: askedQuestions }
     }
+  });
+}
+
+// Adds a vote for the passed in answer
+function addVote(answerId) {
+  models.Answer.findOne({
+    where: {
+      id: answerId
+    }
+  }).then(function(data) {
+    var answer = data.dataValues;
+    answer.votes++;
+    models.Answer.update(answer, {
+      where: {
+        id: answerId
+      }
+    });
   });
 }

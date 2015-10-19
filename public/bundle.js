@@ -5,14 +5,32 @@ require("./js/survey-service.js");
 
 app.controller("MainController", function(SurveyService) {
     var vm = this;
-    SurveyService.getQuestion().then(function(response) {
-      vm.question = response.data.text;
-      vm.answers = response.data.answers;
-    });
+    var questionId;
+    function getQuestion() {
+      SurveyService.getQuestion().then(function(response) {
+        questionId = response.data.id;
+        vm.question = response.data.text;
+        vm.answers = response.data.answers;
+      });
+    }
 
     vm.submit = function() {
-      console.log("Results submitted");
+      var data = {};
+      data.questionId = questionId;
+      data.answerId = vm.answerId;
+      SurveyService.sendResponse(data);
+
+      // Clear existing data:
+      vm.question = null;
+      vm.answers = null;
+      questionId = null;
+
+      // Get a new question
+      getQuestion();
     }
+
+    // Get initial question
+    getQuestion();
 });
 
 },{"./js/survey-service.js":2,"angular":4}],2:[function(require,module,exports){
@@ -24,8 +42,13 @@ app.factory("SurveyService", function($http) {
       return $http.get("/api/survey");
     };
 
+    var sendResponse = function(data) {
+      return $http.post("/api/survey", data)
+    };
+
     return {
-      getQuestion: getQuestion
+      getQuestion: getQuestion,
+      sendResponse: sendResponse
     };
 });
 
