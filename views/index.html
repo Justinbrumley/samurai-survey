@@ -1,9 +1,21 @@
 <!doctype html>
-<html>
+<html ng-app='SurveySamurai'>
 <head>
   <title>Survey Samurai</title>
+  <script type="application/javascript" src="/bundle.js" ></script>
 </head>
-<body>
+<body ng-controller='MainController as main'>
   <h2>Survey Samurai</h2>
+  <h4>{{ main.question }}</h4>
+
+  <div class='survey'>
+    <div ng-repeat="answer in main.answers">
+      <label>
+        <input type='radio' name="answerRadio" value="{{answer.id}}" />
+        <span>{{ answer.text }}</span>
+      <label>
+    </div>
+    <button ng-click="main.submit()">Submit</button>
+  </div>
 </body>
 </html>
