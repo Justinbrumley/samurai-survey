@@ -1,0 +1,17 @@
+{
+  "name": "survey-samurai",
+  "version": "1.0.0",
+  "description": "Random survey application.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Survey"
+  ],
+  "author": "Justin Brumley",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
+}
