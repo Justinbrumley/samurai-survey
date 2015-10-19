@@ -1,4 +1,6 @@
+// --------------------------------
 // Module imports
+// --------------------------------
 var express = require("express"),
     app = express(),
     session = require("express-session"),
@@ -6,25 +8,30 @@ var express = require("express"),
     cookieParser = require("cookie-parser"),
     models = require("./models");
 
-// Load configuration values
+// --------------------------------
+// Config and Middleware Setup
+// --------------------------------
 var config = require("./config.js");
 var port = config.port;
 
-// Set up express session and express body parser
+// Session Setup
 app.use(session({
   secret: 'SuperSamurai',
   saveUninitialized: true,
   resave: false
 }));
 
+// Body parser and Cookie Parser Setup
 app.use(cookieParser("SuperSamuraiCookies"));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended:true
-}));
+app.use(bodyParser.urlencoded({ extended:true }));
 
 // Initialize static file directory.
 app.use(express.static(__dirname + "/public"));
+
+// --------------------------------
+// Routing Setup
+// --------------------------------
 
 // Load the API Router
 var apiRouter = require("./apiController.js");
@@ -43,7 +50,9 @@ app.use(authenticate);
 // Admin Dashboard
 app.get("/admin/dashboard", dashboard);
 
-// Start up the server after syncing sequelize
+// --------------------------------
+// Server Start
+// --------------------------------
 models.sequelize.sync().then(function() {
   app.listen(port, function(err) {
     if(err)

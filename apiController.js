@@ -1,31 +1,24 @@
+// --------------------------------
+// Module imports
+// --------------------------------
 var express = require("express"),
     router = express.Router(),
     config = require("./config.js"),
     _ = require("underscore"),
     dbHelper = require("./db-helper.js");
 
-// Retrieves a random survey from the database.
+// --------------------------------
+// Middleware and Route Declarations
+// --------------------------------
 router.get("/survey", getQuestion);
-
-// Auth middleware. Every route after this requires login.
-router.use(function(req, res, next) {
-  if(req.session) {
-    if(!req.session.admin) {
-      return res.redirect("/admin");
-    }
-  } else {
-    return res.redirect("/admin");
-  }
-  next();
-});
-
-// Retrieves data that the dashboard will use to show statistics
+router.use(authenticate);
 router.get("/survey/data", getData);
-
-// Retrieves data for a specific survey
 router.get("/survey/:id/data", getDataBySurvey);
-
 module.exports = router;
+
+// --------------------------------
+// Middleware and Route Functions
+// --------------------------------
 
 // Gets a single random question from the db and sends to the user.
 function getQuestion(req, res) {
@@ -55,6 +48,18 @@ function getQuestion(req, res) {
       res.json(values);
     });
   });
+}
+
+// Authenticate middleware
+function authenticate(req, res, next) {
+  if(req.session) {
+    if(!req.session.admin) {
+      return res.redirect("/admin");
+    }
+  } else {
+    return res.redirect("/admin");
+  }
+  next();
 }
 
 // Retrieves generic survey data for the dashboard.
