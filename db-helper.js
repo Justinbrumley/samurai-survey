@@ -6,9 +6,10 @@ module.exports = {
     askedQuestions = askedQuestions.length ? askedQuestions : [0];
 
     return models.Question.findAll({
-      /*where: {
+      attributes: ["id", "text"],
+      where: {
         id: { $notIn: askedQuestions }
-      } */
+      }
     });
   }
 
