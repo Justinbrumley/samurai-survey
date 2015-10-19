@@ -6,7 +6,11 @@ var express = require("express"),
 
 // Retrieves a random survey from the database.
 router.get("/survey", function(req, res) {
-
+  // Get list of questions the user has already been asked from cookies
+  var questions = [];
+  if(req.cookies && req.cookies.questions) {
+    questions = req.cookies.questions;
+  }
 });
 
 // Auth middleware. Every route after this requires login.

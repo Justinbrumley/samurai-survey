@@ -1,1 +1,1 @@
-var Sequelize = require("sequelize");
+var models = require("./models");
