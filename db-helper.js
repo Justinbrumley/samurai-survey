@@ -55,7 +55,7 @@ function getData() {
 
 // Adds a vote for the passed in answer
 function addVote(answerId) {
-  models.Answer.findOne({
+  return models.Answer.findOne({
     where: {
       id: answerId
     }

@@ -12,7 +12,7 @@ var express = require("express"),
 // --------------------------------
 router.get("/survey", getQuestion); // Get question
 router.post("/survey", postResponse); // Post response
-//router.use(authenticate); // TODO UNCOMMENT Auth middleware
+router.use(authenticate); // TODO UNCOMMENT Auth middleware
 router.post("/survey/create", addQuestion); // Add new survey
 router.get("/survey/data", getData); // Get generic dashboard data
 router.get("/survey/:id/data", getDataBySurvey); // Get survey data
@@ -48,12 +48,16 @@ function postResponse(req, res) {
 
   // TODO add verification code to prevent user from answering a survey they
   // already answered, and make sure that the answer matches the survey.
-
-  var questions = req.cookies.questions;
-  // questions.push(questionId); TODO Uncomment
+  var questions = req.cookies.questions || [];
+  questions.push(questionId);
   res.cookie("questions", questions);
 
-  dbHelper.addVote(answerId);
+  dbHelper.addVote(answerId).then(function() {
+    res.status(200);
+    return res.json({
+      message: "Response Posted"
+    });
+  });
 }
 
 // Authenticate middleware
@@ -112,7 +116,6 @@ function getDataBySurvey(req, res) {
 }
 */
 function addQuestion(req, res) {
-  console.log(req.body);
   var question = req.body.question;
   var answers = req.body.answers;
   if(!question || !answers || answers.constructor !== Array) {

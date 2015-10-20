@@ -16,15 +16,15 @@ app.controller("MainController", function(SurveyService) {
       SurveyService.sendResponse({
         questionId: questionId,
         answerId: vm.answerId
+      }).then(function() {
+        // Get a new question
+        getQuestion();
       });
 
       // Clear existing data:
       vm.question = null;
       vm.answers = null;
       questionId = null;
-
-      // Get a new question
-      getQuestion();
     }
 
     // Get initial question
