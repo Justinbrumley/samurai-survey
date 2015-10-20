@@ -2,6 +2,7 @@ var models = require("./models");
 
 module.exports = {
   getQuestions: getQuestions,
+  getQuestion: getQuestion,
   addVote: addVote
 };
 
@@ -17,6 +18,16 @@ function getQuestions(askedQuestions) {
     attributes: ["id", "text"],
     where: {
       id: { $notIn: askedQuestions }
+    }
+  });
+}
+
+// Gets survey information by question id
+function getQuestion(id) {
+  return models.Question.findOne({
+    attributes: ["id", "text"],
+    where: {
+      id: id
     }
   });
 }
