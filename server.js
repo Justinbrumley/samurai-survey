@@ -43,7 +43,6 @@ app.post("/admin", adminPost);
 // app.use(authenticate); TODO UNCOMMENT TO ENABLE AUTH
 app.get("/admin/dashboard", dashboard);
 app.get("/admin/survey/create", createSurvey);
-app.post("admin/survey/create", postSurvey);
 
 // --------------------------------
 // Server Start
@@ -103,9 +102,4 @@ function dashboard(req, res) {
 // Returns the view for creating a new survey
 function createSurvey(req, res) {
   return res.sendFile(__dirname + "/views/survey-create.html");
-}
-
-// Posts a new survey to the server.
-function postSurvey(req, res) {
-
 }

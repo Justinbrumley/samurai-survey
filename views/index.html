@@ -2,22 +2,28 @@
 <html ng-app='SurveySamurai'>
 <head>
   <title>Survey Samurai</title>
+  <link href='https://fonts.googleapis.com/css?family=Maven+Pro:400,700' rel='stylesheet' type='text/css'>
+  <link href='/css/foundation.min.css' rel='stylesheet' />
+  <link href='/css/default.css' rel='stylesheet' />
   <script type="application/javascript" src="/bundle.js" ></script>
 </head>
 <body ng-controller='MainController as main'>
-  <h2>Survey Samurai</h2>
-  <h4>{{ main.question }}</h4>
-
-  <div class='survey' ng-show='main.question'>
-    <div ng-repeat="answer in main.answers">
+  <div class='navbar'>
+    <div class='title'><a href='#'>Survey Samurai</a></div>
+  </div>
+  <div class='question'>{{ main.question }}</div>
+  <br />
+  <div class='survey columns small-12 medium-6 medium-offset-3' ng-show='main.question'>
+    <div class='answer' ng-repeat="answer in main.answers">
       <label>
         <input ng-model='main.answerId' type='radio' name="answerRadio" value="{{answer.id}}" />
         <span>{{ answer.text }}</span>
-      <label>
+      </label>
     </div>
-    <button ng-click="main.submit()">Submit</button>
+    <br />
+    <button class='submit-button' ng-click="main.submit()">Submit</button>
   </div>
-  <div class='sorry-message' ng-show='!main.question'>
+  <div class='sorry-message columns small-12 medium-6 medium-offset-3' ng-show='!main.question'>
     Sorry! There doesn't seem to be any surveys for you to answer. :(
   </div>
   <div class='footer'>

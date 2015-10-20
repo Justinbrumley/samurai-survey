@@ -11,6 +11,7 @@ app.controller("MainController", function(SurveyService) {
       });
     }
 
+    // Submit answer to survey to server.
     vm.submit = function() {
       SurveyService.sendResponse({
         questionId: questionId,

@@ -1,6 +1,7 @@
 var gulp = require("gulp");
 var browserify = require("browserify");
 var source = require("vinyl-source-stream");
+var minifyCss = require('gulp-minify-css');
 
 gulp.task("browserify", function() {
   return browserify("./dev/app.js")
@@ -9,8 +10,15 @@ gulp.task("browserify", function() {
     .pipe(gulp.dest("./public"));
 });
 
-gulp.task("watch", function() {
-  gulp.watch([ "./dev/app.js", "./dev/js/**/*.js" ], [ "browserify" ]);
+gulp.task("minifyCss", function() {
+  return gulp.src('./dev/css/*.css')
+    .pipe(minifyCss({compatibility: 'ie8'}))
+    .pipe(gulp.dest('public/css'));
 });
 
-gulp.task("default", ["browserify", "watch"]);
+gulp.task("watch", function() {
+  gulp.watch([ "./dev/app.js", "./dev/js/**/*.js" ], [ "browserify" ]);
+  gulp.watch([ "./dev/css/*.css" ], [ "minifyCss" ]);
+});
+
+gulp.task("default", ["browserify", "minifyCss", "watch"]);
