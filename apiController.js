@@ -5,15 +5,14 @@ var express = require("express"),
     router = express.Router(),
     config = require("./config.js"),
     _ = require("underscore"),
-    dbHelper = require("./db-helper.js"),
-    async = require("async");
+    dbHelper = require("./db-helper.js");
 
 // --------------------------------
 // Middleware and Route Declarations
 // --------------------------------
 router.get("/survey", getQuestion); // Get question
 router.post("/survey", postResponse); // Post response
-//router.use(authenticate); // Auth middleware
+//router.use(authenticate); // TODO UNCOMMENT Auth middleware
 router.post("/survey/create", addQuestion); // Add new survey
 router.get("/survey/data", getData); // Get generic dashboard data
 router.get("/survey/:id/data", getDataBySurvey); // Get survey data
@@ -33,18 +32,12 @@ function getQuestion(req, res) {
 
   // Request all of the unasked questions from the db.
   dbHelper.getQuestions(questions).then(function(data) {
-    if(!data || data.length == 0) {
-      return res.json([]);
+    if(data) {
+      // Get a random survey from the list and send it to user.
+      var i = Math.floor(Math.random() * data.length);
+      var tuple = data[i];
+      return res.json(data[i]);
     }
-
-    // Get a random question from the list and send it to user.
-    var i = Math.floor(Math.random() * data.length);
-    var tuple = data[i];
-    var values = tuple.dataValues;
-    tuple.getAnswers({ attributes: [ "id", "text" ] }).then(function(answers) {
-      values.answers = answers;
-      res.json(values);
-    });
   });
 }
 
@@ -94,10 +87,9 @@ function getDataBySurvey(req, res) {
         answers = answers.map(function(ele) {
           return ele.dataValues;
         });
-        return res.json({
-          question: question.dataValues,
-          answers: answers
-        });
+        var obj = question.dataValues;
+        obj.answers = answers;
+        return res.json(obj);
       });
     });
   } else {
@@ -108,6 +100,32 @@ function getDataBySurvey(req, res) {
 }
 
 // Adds a new question (with answers) to the db.
+// Format of JSON when adding:
+/*
+{
+  question: {
+    text: ""
+  },
+  answers: [{
+    text: ""
+  }]
+}
+*/
 function addQuestion(req, res) {
-
+  console.log(req.body);
+  var question = req.body.question;
+  var answers = req.body.answers;
+  if(!question || !answers || answers.constructor !== Array) {
+    return res.json({
+      message: "Error adding question."
+    });
+  }
+  dbHelper.addQuestion(question).then(function(object) {
+    dbHelper.addAnswers(answers, object.id).then(function() {
+      res.status(201);
+      res.json({
+        message: "Survey added to db!"
+      });
+    });
+  });
 }

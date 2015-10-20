@@ -23,8 +23,8 @@ app.use(session({
 
 // Body parser and Cookie Parser Setup
 app.use(cookieParser("SuperSamuraiCookies"));
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended:true }));
+app.use(bodyParser.json());
 
 // Initialize static file directory.
 app.use(express.static(__dirname + "/public"));

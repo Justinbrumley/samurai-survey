@@ -4,7 +4,9 @@ module.exports = {
   getQuestions: getQuestions,
   getQuestion: getQuestion,
   getData: getData,
-  addVote: addVote
+  addVote: addVote,
+  addQuestion: addQuestion,
+  addAnswers: addAnswers
 };
 
 // --------------------------------
@@ -16,6 +18,12 @@ function getQuestions(askedQuestions) {
   askedQuestions = askedQuestions.length ? askedQuestions : [0];
 
   return models.Question.findAll({
+    include: [
+      {
+        model: models.Answer,
+        attributes: ["id", "text"]
+      }
+    ],
     attributes: ["id", "text"],
     where: {
       id: { $notIn: askedQuestions }
@@ -60,4 +68,24 @@ function addVote(answerId) {
       }
     });
   });
+}
+
+// Adds a new question to the database.
+function addQuestion(question) {
+  return models.Question.create({
+    text: question.text
+  });
+}
+
+// Adds answers for a specified survey question
+function addAnswers(answers, questionId) {
+  answers = answers.map(function(ele) {
+    // Map the question Id to the answers
+    ele.QuestionId = questionId;
+    ele.votes = 0;
+    if(ele.text) // Filters out blank answers
+      return ele;
+  });
+
+  return models.Answer.bulkCreate(answers);
 }

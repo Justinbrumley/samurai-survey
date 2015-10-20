@@ -2,7 +2,11 @@
 var angular = require("angular");
 var app = angular.module("SurveySamurai", []);
 require("./js/survey-service.js");
+require("./js/controllers/main-controller.js");
 
+},{"./js/controllers/main-controller.js":2,"./js/survey-service.js":3,"angular":5}],2:[function(require,module,exports){
+var angular = require("angular");
+var app = angular.module("SurveySamurai");
 app.controller("MainController", function(SurveyService) {
     var vm = this;
     var questionId;
@@ -10,15 +14,15 @@ app.controller("MainController", function(SurveyService) {
       SurveyService.getQuestion().then(function(response) {
         questionId = response.data.id;
         vm.question = response.data.text;
-        vm.answers = response.data.answers;
+        vm.answers = response.data.Answers;
       });
     }
 
     vm.submit = function() {
-      var data = {};
-      data.questionId = questionId;
-      data.answerId = vm.answerId;
-      SurveyService.sendResponse(data);
+      SurveyService.sendResponse({
+        questionId: questionId,
+        answerId: vm.answerId
+      });
 
       // Clear existing data:
       vm.question = null;
@@ -33,7 +37,7 @@ app.controller("MainController", function(SurveyService) {
     getQuestion();
 });
 
-},{"./js/survey-service.js":2,"angular":4}],2:[function(require,module,exports){
+},{"angular":5}],3:[function(require,module,exports){
 var angular = require("angular");
 var app = angular.module("SurveySamurai");
 app.factory("SurveyService", function($http) {
@@ -52,7 +56,7 @@ app.factory("SurveyService", function($http) {
     };
 });
 
-},{"angular":4}],3:[function(require,module,exports){
+},{"angular":5}],4:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.7
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -28957,8 +28961,8 @@ $provide.value("$locale", {
 })(window, document);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":3}]},{},[1]);
+},{"./angular":4}]},{},[1]);
