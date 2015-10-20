@@ -10,8 +10,13 @@ app.factory("SurveyService", function($http) {
       return $http.post("/api/survey", data)
     };
 
+    var addQuestion = function(data) {
+      return $http.post("/api/survey/create", data);
+    };
+
     return {
       getQuestion: getQuestion,
-      sendResponse: sendResponse
+      sendResponse: sendResponse,
+      addQuestion: addQuestion
     };
 });
