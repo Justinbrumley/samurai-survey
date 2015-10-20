@@ -17,6 +17,9 @@
     </div>
     <button ng-click="main.submit()">Submit</button>
   </div>
+  <div class='sorry-message' ng-show='!main.question'>
+    Sorry! There doesn't seem to be any surveys for you to answer. :(
+  </div>
   <div class='footer'>
     <a href='/admin'>Admin Login</a>
   </div>

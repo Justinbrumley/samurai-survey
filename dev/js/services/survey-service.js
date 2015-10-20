@@ -11,6 +11,7 @@ app.factory("SurveyService", function($http) {
     };
 
     var addQuestion = function(data) {
+      console.log(JSON.stringify(data));
       return $http.post("/api/survey/create", data);
     };
 

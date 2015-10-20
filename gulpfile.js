@@ -10,7 +10,7 @@ gulp.task("browserify", function() {
 });
 
 gulp.task("watch", function() {
-  gulp.watch([ "./dev/app.js", "./dev/js/*.js" ], [ "browserify" ]);
+  gulp.watch([ "./dev/app.js", "./dev/js/**/*.js" ], [ "browserify" ]);
 });
 
 gulp.task("default", ["browserify", "watch"]);

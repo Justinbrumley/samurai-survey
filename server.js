@@ -37,18 +37,13 @@ app.use(express.static(__dirname + "/public"));
 var apiRouter = require("./apiController.js");
 app.use("/api", apiRouter);
 
-// Default Survey Route
 app.get("/", home);
-
-// Admin Login Routes
 app.get("/admin", adminGet);
 app.post("/admin", adminPost);
-
-// Auth middleware. Every route after this requires login.
-app.use(authenticate);
-
-// Admin Dashboard
+// app.use(authenticate); TODO UNCOMMENT TO ENABLE AUTH
 app.get("/admin/dashboard", dashboard);
+app.get("/admin/survey/create", createSurvey);
+app.post("admin/survey/create", postSurvey);
 
 // --------------------------------
 // Server Start
@@ -69,10 +64,12 @@ function home(req, res) {
   return res.sendFile(__dirname + "/views/index.html");
 }
 
+// Route to get login view
 function adminGet(req, res) {
   return res.sendFile(__dirname + "/views/admin.html");
 }
 
+// Route to post admin login information too.
 function adminPost(req, res) {
   var username = req.body.username;
   var password = req.body.password;
@@ -86,6 +83,7 @@ function adminPost(req, res) {
   }
 }
 
+// Admin authentication middleware
 function authenticate(req, res, next) {
   if(req.session) {
     if(!req.session.admin) {
@@ -97,6 +95,17 @@ function authenticate(req, res, next) {
   next();
 }
 
+// Returns the view for the dashboard
 function dashboard(req, res) {
   return res.sendFile(__dirname + "/views/dashboard.html");
+}
+
+// Returns the view for creating a new survey
+function createSurvey(req, res) {
+  return res.sendFile(__dirname + "/views/survey-create.html");
+}
+
+// Posts a new survey to the server.
+function postSurvey(req, res) {
+
 }

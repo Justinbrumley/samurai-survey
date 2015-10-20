@@ -1,18 +1,60 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var angular = require("angular");
 var app = angular.module("SurveySamurai", []);
-require("./js/survey-service.js");
+require("./js/services/survey-service.js");
 require("./js/controllers/main-controller.js");
 require("./js/controllers/create-controller.js");
+require("./js/controllers/dashboard-controller.js");
 
-},{"./js/controllers/create-controller.js":2,"./js/controllers/main-controller.js":3,"./js/survey-service.js":4,"angular":6}],2:[function(require,module,exports){
+},{"./js/controllers/create-controller.js":2,"./js/controllers/dashboard-controller.js":3,"./js/controllers/main-controller.js":4,"./js/services/survey-service.js":5,"angular":7}],2:[function(require,module,exports){
 var angular = require("angular");
 var app = angular.module("SurveySamurai");
 app.controller("CreateController", function(SurveyService) {
     var vm = this;
+    vm.question = "";
+    vm.answers = new Array(4);
+    vm.addingSurvey = false;
+
+    vm.addAnswerBox = function() {
+      vm.answers.push("");
+    }
+
+    // Creates a new survey and posts it to the server
+    vm.addSurvey = function() {
+      vm.addingSurvey = true;
+      var data = {};
+
+      // Get the question
+      data.question = {
+        text: vm.question
+      };
+
+      // Pull the answers into an appropriate array
+      data.answers = [];
+      for(var i in vm.answers) {
+        if(vm.answers[i] && vm.answers[i] !== "") {
+          data.answers.push({
+            text: vm.answers[i]
+          });
+        }
+      }
+
+      // Post the new survey through the survey service.
+      SurveyService.addQuestion(data).then(function() {
+        document.location.href = "/admin/dashboard";
+      });
+
+    };
 });
 
-},{"angular":6}],3:[function(require,module,exports){
+},{"angular":7}],3:[function(require,module,exports){
+var angular = require("angular");
+var app = angular.module("SurveySamurai");
+app.controller("DashboardController", function(SurveyService) {
+    var vm = this;
+});
+
+},{"angular":7}],4:[function(require,module,exports){
 var angular = require("angular");
 var app = angular.module("SurveySamurai");
 app.controller("MainController", function(SurveyService) {
@@ -45,7 +87,7 @@ app.controller("MainController", function(SurveyService) {
     getQuestion();
 });
 
-},{"angular":6}],4:[function(require,module,exports){
+},{"angular":7}],5:[function(require,module,exports){
 var angular = require("angular");
 var app = angular.module("SurveySamurai");
 app.factory("SurveyService", function($http) {
@@ -59,6 +101,7 @@ app.factory("SurveyService", function($http) {
     };
 
     var addQuestion = function(data) {
+      console.log(JSON.stringify(data));
       return $http.post("/api/survey/create", data);
     };
 
@@ -69,7 +112,7 @@ app.factory("SurveyService", function($http) {
     };
 });
 
-},{"angular":6}],5:[function(require,module,exports){
+},{"angular":7}],6:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.7
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -28974,8 +29017,8 @@ $provide.value("$locale", {
 })(window, document);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":5}]},{},[1]);
+},{"./angular":6}]},{},[1]);
