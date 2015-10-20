@@ -3,6 +3,7 @@ var models = require("./models");
 module.exports = {
   getQuestions: getQuestions,
   getQuestion: getQuestion,
+  getData: getData,
   addVote: addVote
 };
 
@@ -29,6 +30,18 @@ function getQuestion(id) {
     where: {
       id: id
     }
+  });
+}
+
+// Returns all survey information
+function getData() {
+  return models.Question.findAll({
+    include: [{
+        model: models.Answer,
+        attributes: ["id", "text", "votes"]
+      }
+    ],
+    attributes: ["id", "text"]
   });
 }
 

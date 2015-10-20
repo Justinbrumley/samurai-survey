@@ -5,14 +5,15 @@ var express = require("express"),
     router = express.Router(),
     config = require("./config.js"),
     _ = require("underscore"),
-    dbHelper = require("./db-helper.js");
+    dbHelper = require("./db-helper.js"),
+    async = require("async");
 
 // --------------------------------
 // Middleware and Route Declarations
 // --------------------------------
 router.get("/survey", getQuestion); // Get question
 router.post("/survey", postResponse); // Post response
-router.use(authenticate); // Auth middleware
+//router.use(authenticate); // Auth middleware
 router.post("/survey/create", addQuestion); // Add new survey
 router.get("/survey/data", getData); // Get generic dashboard data
 router.get("/survey/:id/data", getDataBySurvey); // Get survey data
@@ -76,10 +77,12 @@ function authenticate(req, res, next) {
 
 // Retrieves generic survey data for the dashboard.
 function getData(req, res) {
-
+  dbHelper.getData().then(function(data) {
+    return res.json(data);
+  });
 }
 
-// Retreives survey information for a specific survey.
+// Retrieves survey information for a specific survey.
 function getDataBySurvey(req, res) {
   var questionId = req.params.id;
 
