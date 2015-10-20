@@ -26,6 +26,10 @@ app.use(cookieParser("SuperSamuraiCookies"));
 app.use(bodyParser.urlencoded({ extended:true }));
 app.use(bodyParser.json());
 
+// Set the view engine
+app.set("view engine", "jade");
+app.set("views", __dirname + "/views");
+
 // Initialize static file directory.
 app.use(express.static(__dirname + "/public"));
 
@@ -60,12 +64,12 @@ models.sequelize.sync().then(function() {
 // Route and Middleware Functions
 // -----------------------------------
 function home(req, res) {
-  return res.sendFile(__dirname + "/views/index.html");
+  return res.render("index");
 }
 
 // Route to get login view
 function adminGet(req, res) {
-  return res.sendFile(__dirname + "/views/admin.html");
+  res.render("admin");
 }
 
 // Route to post admin login information too.
@@ -78,7 +82,7 @@ function adminPost(req, res) {
     res.redirect("/admin/dashboard");
   } else {
     req.session.admin = false;
-    res.sendFile(__dirname + "/views/admin.html");
+    res.render("admin");
   }
 }
 
@@ -96,10 +100,10 @@ function authenticate(req, res, next) {
 
 // Returns the view for the dashboard
 function dashboard(req, res) {
-  return res.sendFile(__dirname + "/views/dashboard.html");
+  return res.render("dashboard");
 }
 
 // Returns the view for creating a new survey
 function createSurvey(req, res) {
-  return res.sendFile(__dirname + "/views/survey-create.html");
+  return res.render("survey-create");
 }

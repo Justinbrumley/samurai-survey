@@ -1,0 +1,13 @@
+doctype html
+html(ng-app='SurveySamurai')
+  head
+    title Survey Samurai
+    link(href='https://fonts.googleapis.com/css?family=Maven+Pro:400,700', rel='stylesheet', type='text/css')
+    link(href='/css/foundation.min.css', rel='stylesheet')
+    link(href='/css/default.css', rel='stylesheet')
+    script(type='application/javascript', src='/bundle.js')
+  body(ng-controller='MainController as main')
+    .navbar
+      .title
+        a(href='/') Survey Samurai
+    block content

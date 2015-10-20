@@ -1,0 +1,14 @@
+extends ./_layout.jade
+
+block content
+  div(ng-controller='CreateController as create')
+    .add-area.columns.small-12.medium-6.medium-offset-3(ng-hide='create.addingSurvey')
+      h3 Question:
+      input(type='text', ng-model='create.question', placeholder='Question')
+      h3 Answers:
+      div(ng-repeat='answer in create.answers track by $index')
+        input(type='text', ng-model='create.answers[$index]', placeholder='Answer')
+      button.submit-button(ng-click='create.addAnswerBox()') +
+      button.submit-button(ng-click='create.addSurvey()') Submit
+    div(ng-hide='!create.addingSurvey')
+      | Adding new survey...

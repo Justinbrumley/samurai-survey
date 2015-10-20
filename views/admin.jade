@@ -1,0 +1,9 @@
+extends ./_layout.jade
+
+block content
+  .columns.medium-6.medium-offset-3.small-12
+    h4 Admin Login
+    form#loginForm(method='POST')
+      input(type='text', name='username', placeholder='Username')
+      input(type='password', name='password', placeholder='Password')
+      button.submit-button(onclick='javascript:document.getElementById("loginForm").submit()') Submit

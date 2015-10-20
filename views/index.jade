@@ -1,0 +1,16 @@
+extends ./_layout.jade
+
+block content
+  .question {{ main.question }}
+  br
+  .survey.columns.small-12.medium-6.medium-offset-3(ng-show='main.question')
+    .answer(ng-repeat='answer in main.answers')
+      label
+        input(ng-model='main.answerId', type='radio', name='answerRadio', value='{{answer.id}}')
+        span  {{ answer.text }}
+    br
+    button.submit-button(ng-click='main.submit()') Submit
+  .sorry-message.columns.small-12.medium-6.medium-offset-3(ng-show='!main.question')
+    | Sorry! There doesn't seem to be any surveys for you to answer. :(
+  .footer
+    a(href='/admin') Admin Login

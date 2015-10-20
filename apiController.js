@@ -46,8 +46,16 @@ function postResponse(req, res) {
   var questionId = req.body.questionId,
       answerId = req.body.answerId;
 
+  if(!questionId || !answerId) {
+    // Either the question id or answer id was not provided.
+    return res.json({
+      message: "No answer provided."
+    });
+  }
+
   // TODO add verification code to prevent user from answering a survey they
   // already answered, and make sure that the answer matches the survey.
+  
   var questions = req.cookies.questions || [];
   questions.push(questionId);
   res.cookie("questions", questions);
