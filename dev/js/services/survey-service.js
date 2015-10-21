@@ -20,10 +20,16 @@ app.factory("SurveyService", function($http) {
       return $http.get("/api/survey/data");
     }
 
+    // Sends delete request to server
+    var deleteSurvey = function(id) {
+      return $http.delete("/api/survey/" + id);
+    };
+
     return {
       getQuestion: getQuestion,
       sendResponse: sendResponse,
       addQuestion: addQuestion,
-      getData: getData
+      getData: getData,
+      deleteSurvey: deleteSurvey
     };
 });

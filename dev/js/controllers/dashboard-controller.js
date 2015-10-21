@@ -11,8 +11,9 @@ app.controller("DashboardController", function(SurveyService) {
     }
 
     // Sends request to delete survey to the server
-    vm.deleteSurvey = function(id) {
-      console.log(id);
+    vm.deleteSurvey = function(id, index) {
+      vm.data.splice(index, 1);
+      SurveyService.deleteSurvey(id);
     };
 
     fetchData();

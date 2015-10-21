@@ -16,6 +16,7 @@ router.post("/survey", postResponse); // Post response
 router.post("/survey/create", addQuestion); // Add new survey
 router.get("/survey/data", getData); // Get generic dashboard data
 router.get("/survey/:id/data", getDataBySurvey); // Get survey data
+router.delete("/survey/:id", deleteSurvey); // Deletes a survey
 module.exports = router;
 
 // --------------------------------
@@ -136,6 +137,19 @@ function addQuestion(req, res) {
       res.status(201);
       res.json({
         message: "Survey added to db!"
+      });
+    });
+  });
+}
+
+// Deletes a surver from the db
+function deleteSurvey(req, res) {
+  var id = req.params.id;
+  console.log("Deleting " + id);
+  dbHelper.deleteAnswers(id).then(function() {
+    dbHelper.deleteSurvey(id).then(function() {
+      return res.json({
+        message: "Survey successfully deleted"
       });
     });
   });

@@ -6,7 +6,9 @@ module.exports = {
   getData: getData,
   addVote: addVote,
   addQuestion: addQuestion,
-  addAnswers: addAnswers
+  addAnswers: addAnswers,
+  deleteAnswers: deleteAnswers,
+  deleteSurvey: deleteSurvey
 };
 
 // --------------------------------
@@ -88,4 +90,22 @@ function addAnswers(answers, questionId) {
   });
 
   return models.Answer.bulkCreate(answers);
+}
+
+// Deletes all answers by question id
+function deleteAnswers(questionId) {
+  return models.Answer.destroy({
+    where: {
+      QuestionId: questionId
+    }
+  });
+}
+
+// Removes survey and all answers for that survey from db
+function deleteSurvey(id) {
+  return models.Question.destroy({
+    where: {
+      id: id
+    }
+  });
 }

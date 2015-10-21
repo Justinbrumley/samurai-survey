@@ -60,8 +60,9 @@ app.controller("DashboardController", function(SurveyService) {
     }
 
     // Sends request to delete survey to the server
-    vm.deleteSurvey = function(id) {
-      console.log(id);
+    vm.deleteSurvey = function(id, index) {
+      vm.data.splice(index, 1);
+      SurveyService.deleteSurvey(id);
     };
 
     fetchData();
@@ -124,11 +125,17 @@ app.factory("SurveyService", function($http) {
       return $http.get("/api/survey/data");
     }
 
+    // Sends delete request to server
+    var deleteSurvey = function(id) {
+      return $http.delete("/api/survey/" + id);
+    };
+
     return {
       getQuestion: getQuestion,
       sendResponse: sendResponse,
       addQuestion: addQuestion,
-      getData: getData
+      getData: getData,
+      deleteSurvey: deleteSurvey
     };
 });
 
