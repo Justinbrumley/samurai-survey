@@ -12,7 +12,7 @@ var express = require("express"),
 // --------------------------------
 router.get("/survey", getQuestion); // Get question
 router.post("/survey", postResponse); // Post response
-router.use(authenticate); // TODO UNCOMMENT Auth middleware
+//router.use(authenticate); // TODO UNCOMMENT Auth middleware
 router.post("/survey/create", addQuestion); // Add new survey
 router.get("/survey/data", getData); // Get generic dashboard data
 router.get("/survey/:id/data", getDataBySurvey); // Get survey data
@@ -55,7 +55,7 @@ function postResponse(req, res) {
 
   // TODO add verification code to prevent user from answering a survey they
   // already answered, and make sure that the answer matches the survey.
-  
+
   var questions = req.cookies.questions || [];
   questions.push(questionId);
   res.cookie("questions", questions);

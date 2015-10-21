@@ -2,8 +2,12 @@ body {
   font-family: 'Maven Pro' sans-serif;
 }
 
+.page-wrapper {
+  overflow-x: hidden;
+}
+
 .navbar {
-  height: 90px;
+  height: 60px;
   background-color: #6B64C1;
   position: relative;
   top: 0;
@@ -27,7 +31,7 @@ body {
 }
 
 .title {
-  font-size: 40px;
+  font-size: 30px;
   position: relative;
   font-family: fantasy;
   top: 50%;
@@ -51,8 +55,12 @@ body {
   text-align:center;
 }
 
+.survey-panel {
+  margin-bottom: 10px !important;
+}
+
 .footer {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;

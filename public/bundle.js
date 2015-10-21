@@ -51,6 +51,20 @@ var angular = require("angular");
 var app = angular.module("SurveySamurai");
 app.controller("DashboardController", function(SurveyService) {
     var vm = this;
+
+    // Fetches survey information from the server.
+    function fetchData() {
+      SurveyService.getData().then(function(results) {
+        vm.data = results.data;
+      });
+    }
+
+    // Sends request to delete survey to the server
+    vm.deleteSurvey = function(id) {
+      console.log(id);
+    };
+
+    fetchData();
 });
 
 },{"angular":7}],4:[function(require,module,exports){
@@ -105,10 +119,16 @@ app.factory("SurveyService", function($http) {
       return $http.post("/api/survey/create", data);
     };
 
+    // Fetches survey information from the server.
+    var getData = function() {
+      return $http.get("/api/survey/data");
+    }
+
     return {
       getQuestion: getQuestion,
       sendResponse: sendResponse,
-      addQuestion: addQuestion
+      addQuestion: addQuestion,
+      getData: getData
     };
 });
 

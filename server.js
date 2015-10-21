@@ -44,7 +44,7 @@ app.use("/api", apiRouter);
 app.get("/", home);
 app.get("/admin", adminGet);
 app.post("/admin", adminPost);
-app.use(authenticate); // TODO UNCOMMENT TO ENABLE AUTH
+//app.use(authenticate); // TODO UNCOMMENT TO ENABLE AUTH
 app.get("/admin/dashboard", dashboard);
 app.get("/admin/survey/create", createSurvey);
 

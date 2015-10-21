@@ -15,9 +15,15 @@ app.factory("SurveyService", function($http) {
       return $http.post("/api/survey/create", data);
     };
 
+    // Fetches survey information from the server.
+    var getData = function() {
+      return $http.get("/api/survey/data");
+    }
+
     return {
       getQuestion: getQuestion,
       sendResponse: sendResponse,
-      addQuestion: addQuestion
+      addQuestion: addQuestion,
+      getData: getData
     };
 });
