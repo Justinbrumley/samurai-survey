@@ -33,7 +33,7 @@ body {
   background-color: #6B64C1;
 }
 
-.submit-button:hover {
+.submit-button:hover, .submit-button:focus {
   background-color: #4F4A8E;
 }
 
