@@ -69,7 +69,12 @@ function home(req, res) {
 
 // Route to get login view
 function adminGet(req, res) {
-  res.render("admin");
+  // If the admin is already logged in, redirect to dashboard
+  if(req.session.admin == true) {
+    return res.redirect("/admin/dashboard");
+  } else {
+    return res.render("admin");
+  }
 }
 
 // Route to post admin login information too.

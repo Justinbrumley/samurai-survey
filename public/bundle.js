@@ -51,6 +51,7 @@ var angular = require("angular");
 var app = angular.module("SurveySamurai");
 app.controller("DashboardController", function(SurveyService) {
     var vm = this;
+    vm.filter = "";
 
     // Fetches survey information from the server.
     function fetchData() {
@@ -63,6 +64,16 @@ app.controller("DashboardController", function(SurveyService) {
     vm.deleteSurvey = function(id, index) {
       vm.data.splice(index, 1);
       SurveyService.deleteSurvey(id);
+    };
+
+    // Filters data by search term
+    vm.filtered = function() {
+      if(vm.data) {
+        var arr =  vm.data.filter(function(ele) {
+          return ele.text.toLowerCase().indexOf(vm.filter.toLowerCase()) >= 0;
+        });
+        return arr;
+      }
     };
 
     fetchData();

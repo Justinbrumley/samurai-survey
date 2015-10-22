@@ -11,17 +11,21 @@ block scripts
     });
 
 block content
-  div.columns.small-12(ng-controller='DashboardController as dash')
-    h4 Admin Dashboard
-    a(href='/admin/survey/create') Add a new survey
-    h5 Surveys
-    ul.accordion(data-accordion='')
-      li.survey-panel.accordion-navigation(ng-repeat='survey in dash.data track by $index')
-        a(href='#panel{{$index}}') 
-          div(style='width: 90%; display:inline-block;') {{ survey.text }}
-          .fi-trash(style='float:right', ng-click='dash.deleteSurvey(survey.id)')
-        .content(id='panel{{$index}}')
-          table
-            tr(ng-repeat='answer in survey.Answers')
-              td {{ answer.text }}
-              td {{ answer.votes }}
+  .row
+    .columns.small-12(ng-controller='DashboardController as dash')
+      h4 Survey Dashboard
+      .row
+        .columns.small-12.medium-6
+          a(href='/admin/survey/create') Add a new survey  
+        .columns.small-12.medium-3.medium-offset-3
+          input(type='text', placeholder='filter', ng-model='dash.filter')
+      ul.accordion(data-accordion='')
+        li.survey-panel.accordion-navigation(ng-repeat='survey in dash.filtered() track by $index')
+          a(href='#panel{{$index}}') 
+            div(style='width: 90%; display:inline-block;') {{ survey.text }}
+            .fi-trash(style='float:right', ng-click='dash.deleteSurvey(survey.id)')
+          .content(id='panel{{$index}}')
+            table.answers-table
+              tr(ng-repeat='answer in survey.Answers')
+                td {{ answer.text }}
+                td(width='50px', style='text-align:center;') {{ answer.votes }}
