@@ -8,7 +8,7 @@ NodeJS Express application for giving surveys to guests. Also allows admins to v
   - Gulp
   - Browserify
 
-Samurai Survey allows an administrator to create surveys that can be viewed and answered by guests to the site. Guests will only be given the same survey once and the surveys given to them are randomized. Administrators are also able to view the results, or add/delete surveys. (default login username:admin password:pw1234)
+Samurai Survey allows an administrator to create surveys that can be viewed and answered by guests to the site. Guests will only be given the same survey once and the surveys given to them are randomized. Administrators are also able to view the results, or add/delete surveys. (default login username:admin password:pw1234; The login page can be accessed by the link at the bottom right of the page)
 
 ### Installation/Setup
 
