@@ -20,15 +20,33 @@ Clone the repository and run the following first:
 npm install
 ```
 
-Before you are start the server up, you will need to set up a MySQL server/database and set the proper config files in config.js:
+Before you are start the server up, you will need to set up a MySQL server/database and set the proper config files in /config/config.json. Example of file:
 
 ``` javascript
-module.exports = {
-  port: 8080, // Port to run the application on
-  connString: "mysql://root@localhost:3306/EXAMPLE_DB", // ConnString
-  admin: "admin", // Admin dashboard login (for the site)
-  password: "pw1234" // Admin dashboard password (for the site)
-};
+{
+  "development": {
+    "username": "root",
+    "password": NULL,
+    "database": "samurai_db",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "logging": false
+  },
+  "test": {
+    "username": "root",
+    "password": NULL,
+    "database": "samurai_db",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": NULL,
+    "database": "samurai_db",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
 ```
 
 Then run the following to start the application (will probably want something like *forever* for production):
