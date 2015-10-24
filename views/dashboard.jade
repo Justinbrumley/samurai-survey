@@ -29,3 +29,5 @@ block content
               tr(ng-repeat='answer in survey.Answers')
                 td {{ answer.text }}
                 td(width='50px', style='text-align:center;') {{ answer.votes }}
+      .sorry-message(ng-show='!dash.data || dash.data.length == 0')
+        | There doesn't seem to be any surveys here :(
