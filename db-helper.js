@@ -8,14 +8,17 @@ module.exports = {
   addQuestion: addQuestion,
   addAnswers: addAnswers,
   deleteAnswers: deleteAnswers,
-  deleteSurvey: deleteSurvey
+  deleteSurvey: deleteSurvey,
+  verifyAnswer: verifyAnswer
 };
 
 // --------------------------------
 // Module Functions
 // --------------------------------
 
-// Retrieves a list of questions that have not been asked yet (by user)
+/*
+    Retrieves a list of questions that have not been asked yet (by user)
+*/
 function getQuestions(askedQuestions) {
   askedQuestions = askedQuestions.length ? askedQuestions : [0];
 
@@ -33,7 +36,9 @@ function getQuestions(askedQuestions) {
   });
 }
 
-// Gets survey information by question id
+/*
+    Gets survey information by question id
+*/
 function getQuestion(id) {
   return models.Question.findOne({
     attributes: ["id", "text"],
@@ -43,7 +48,9 @@ function getQuestion(id) {
   });
 }
 
-// Returns all survey information
+/*
+    Returns all survey information
+*/
 function getData() {
   return models.Question.findAll({
     include: [{
@@ -55,7 +62,9 @@ function getData() {
   });
 }
 
-// Adds a vote for the passed in answer
+/*
+    Adds a vote for the passed in answer
+*/
 function addVote(answerId) {
   return models.Answer.findOne({
     where: {
@@ -72,14 +81,18 @@ function addVote(answerId) {
   });
 }
 
-// Adds a new question to the database.
+/*
+    Adds a new question to the database.
+*/
 function addQuestion(question) {
   return models.Question.create({
     text: question.text
   });
 }
 
-// Adds answers for a specified survey question
+/*
+    Adds answers for a specified survey question
+*/
 function addAnswers(answers, questionId) {
   answers = answers.map(function(ele) {
     // Map the question Id to the answers
@@ -92,7 +105,9 @@ function addAnswers(answers, questionId) {
   return models.Answer.bulkCreate(answers);
 }
 
-// Deletes all answers by question id
+/*
+    Deletes all answers by question id
+*/
 function deleteAnswers(questionId) {
   return models.Answer.destroy({
     where: {
@@ -101,11 +116,26 @@ function deleteAnswers(questionId) {
   });
 }
 
-// Removes survey and all answers for that survey from db
+/*
+    Removes survey and all answers for that survey from db
+*/
 function deleteSurvey(id) {
   return models.Question.destroy({
     where: {
       id: id
     }
+  });
+}
+
+/*
+    Verifies that an answer is connected to a certain survey
+*/
+function verifyAnswer(answerId, questionId) {
+  return models.Answer.findOne({
+    where: {
+      id: answerId
+    }
+  }).then(function(answer) {
+    return answer.QuestionId == questionId;
   });
 }
