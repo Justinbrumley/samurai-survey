@@ -49,6 +49,8 @@ Before you are start the server up, you will need to set up a MySQL server/datab
 }
 ```
 
+For configuration related to the application itself, look inside of /config.js.
+
 Then run the following to start the application (will probably want something like *forever* for production):
 
 ``` sh
