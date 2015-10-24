@@ -12,7 +12,7 @@ var express = require("express"),
 // Config and Middleware Setup
 // --------------------------------
 var config = require("./config.js");
-var port = config.port;
+var port = config.port || process.env.port || 8080;
 
 // Session Setup
 app.use(session({
