@@ -3,7 +3,7 @@ var app = angular.module("SurveySamurai");
 app.controller("CreateController", function(SurveyService) {
     var vm = this;
     vm.question = "";
-    vm.answers = new Array(2);
+    vm.answers = new Array(4);
     vm.addingSurvey = false;
 
     vm.addAnswerBox = function() {

@@ -7,7 +7,7 @@ block content
       input(type='text', ng-model='create.question', placeholder='Question')
       h3 Answers:
       div(ng-repeat='answer in create.answers track by $index')
-        input(type='text', ng-model='create.answers[$index]', placeholder='Answer')
+        input(type='text', id='answer{{$index}}', ng-model='create.answers[$index]', placeholder='Answer')
       button.submit-button(ng-click='create.addAnswerBox()') +
       button.submit-button(ng-click='create.addSurvey()') Submit
     div(ng-hide='!create.addingSurvey')

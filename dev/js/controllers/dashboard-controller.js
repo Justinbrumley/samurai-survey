@@ -4,20 +4,26 @@ app.controller("DashboardController", function(SurveyService) {
     var vm = this;
     vm.filter = "";
 
-    // Fetches survey information from the server.
+    /*
+        Fetches survey information from the server.
+    */
     function fetchData() {
       SurveyService.getData().then(function(results) {
         vm.data = results.data;
       });
     }
 
-    // Sends request to delete survey to the server
+    /*
+        Sends request to delete survey to the server
+    */
     vm.deleteSurvey = function(id, index) {
-      vm.data.splice(index, 1);
-      SurveyService.deleteSurvey(id);
+      vm.data.splice(index, 1); // First splice from data array
+      SurveyService.deleteSurvey(id); // Then update the server
     };
 
-    // Filters data by search term
+    /*
+      Filters data by search term
+    */
     vm.filtered = function() {
       if(vm.data) {
         var arr =  vm.data.filter(function(ele) {
@@ -27,5 +33,6 @@ app.controller("DashboardController", function(SurveyService) {
       }
     };
 
+    // Get initial data
     fetchData();
 });

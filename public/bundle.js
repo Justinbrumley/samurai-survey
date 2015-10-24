@@ -12,7 +12,7 @@ var app = angular.module("SurveySamurai");
 app.controller("CreateController", function(SurveyService) {
     var vm = this;
     vm.question = "";
-    vm.answers = new Array(2);
+    vm.answers = new Array(4);
     vm.addingSurvey = false;
 
     vm.addAnswerBox = function() {
@@ -53,20 +53,26 @@ app.controller("DashboardController", function(SurveyService) {
     var vm = this;
     vm.filter = "";
 
-    // Fetches survey information from the server.
+    /*
+        Fetches survey information from the server.
+    */
     function fetchData() {
       SurveyService.getData().then(function(results) {
         vm.data = results.data;
       });
     }
 
-    // Sends request to delete survey to the server
+    /*
+        Sends request to delete survey to the server
+    */
     vm.deleteSurvey = function(id, index) {
-      vm.data.splice(index, 1);
-      SurveyService.deleteSurvey(id);
+      vm.data.splice(index, 1); // First splice from data array
+      SurveyService.deleteSurvey(id); // Then update the server
     };
 
-    // Filters data by search term
+    /*
+      Filters data by search term
+    */
     vm.filtered = function() {
       if(vm.data) {
         var arr =  vm.data.filter(function(ele) {
@@ -76,6 +82,7 @@ app.controller("DashboardController", function(SurveyService) {
       }
     };
 
+    // Get initial data
     fetchData();
 });
 
@@ -83,34 +90,35 @@ app.controller("DashboardController", function(SurveyService) {
 var angular = require("angular");
 var app = angular.module("SurveySamurai");
 app.controller("MainController", function(SurveyService) {
-    var vm = this;
-    var questionId;
-    function getQuestion() {
-      SurveyService.getQuestion().then(function(response) {
-        questionId = response.data.id;
-        vm.question = response.data.text;
-        vm.answers = response.data.Answers;
-      });
-    }
+  var vm = this,
+      questionId;
 
-    // Submit answer to survey to server.
-    vm.submit = function() {
-      SurveyService.sendResponse({
-        questionId: questionId,
-        answerId: vm.answerId
-      }).then(function() {
-        // Get a new question
-        getQuestion();
-      });
+  function getQuestion() {
+    SurveyService.getQuestion().then(function(response) {
+      questionId = response.data.id;
+      vm.question = response.data.text;
+      vm.answers = response.data.Answers;
+    });
+  }
 
-      // Clear existing data:
-      vm.question = null;
-      vm.answers = null;
-      questionId = null;
-    }
+  // Submit answer to survey to server.
+  vm.submit = function() {
+    SurveyService.sendResponse({
+      questionId: questionId,
+      answerId: vm.answerId
+    }).then(function() {
+      // Get a new question
+      getQuestion();
+    });
 
-    // Get initial question
-    getQuestion();
+    // Clear existing data
+    vm.question = null;
+    vm.answers = null;
+    questionId = null;
+  }
+
+  // Get initial question
+  getQuestion();
 });
 
 },{"angular":7}],5:[function(require,module,exports){
@@ -118,36 +126,47 @@ var angular = require("angular");
 var app = angular.module("SurveySamurai");
 app.factory("SurveyService", function($http) {
 
-    var getQuestion = function() {
-      return $http.get("/api/survey");
-    };
+  var factory = {};
 
-    var sendResponse = function(data) {
-      return $http.post("/api/survey", data)
-    };
+  /*
+      GETS a random question
+  */
+  factory.getQuestion = function() {
+    return $http.get("/api/survey");
+  };
 
-    var addQuestion = function(data) {
-      console.log(JSON.stringify(data));
-      return $http.post("/api/survey/create", data);
-    };
+  /*
+      POSTS answer to a survey
+  */
+  factory.sendResponse = function(data) {
+    return $http.post("/api/survey", data)
+  };
 
-    // Fetches survey information from the server.
-    var getData = function() {
-      return $http.get("/api/survey/data");
-    }
+  /*
+      POSTS new survey to the server
+  */
+  factory.addQuestion = function(data) {
+    console.log(JSON.stringify(data));
+    return $http.post("/api/survey/create", data);
+  };
 
-    // Sends delete request to server
-    var deleteSurvey = function(id) {
-      return $http.delete("/api/survey/" + id);
-    };
+  /*
+      GETS data about all survey.
+      (should probably paginate this information case it got long, but for a
+      demo is shouldn't be too bad)
+  */
+  factory.getData = function() {
+    return $http.get("/api/survey/data");
+  }
 
-    return {
-      getQuestion: getQuestion,
-      sendResponse: sendResponse,
-      addQuestion: addQuestion,
-      getData: getData,
-      deleteSurvey: deleteSurvey
-    };
+  /*
+      DELETES survey
+  */
+  factory.deleteSurvey = function(id) {
+    return $http.delete("/api/survey/" + id);
+  };
+
+  return factory;
 });
 
 },{"angular":7}],6:[function(require,module,exports){
